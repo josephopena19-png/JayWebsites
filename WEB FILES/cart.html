@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | TRESMARIAS & PRINCE</title>
+  <link rel="icon" type="image/png" href="FRONT LOGO.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <img src="logo copy.png" alt="TRESMARIAS & PRINCE">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="promotions.html">Promotions</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="right-tools">
+        <a href="menu.html" class="cart">🛒</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CART SECTION -->
+  <section class="cart-container">
+    <h1>Your Order Cart</h1>
+    <div class="cart-items" id="cart-items">
+      <!-- Items will appear here using JavaScript -->
+    </div>
+
+    <div class="cart-footer" id="cart-footer">
+      <h2>Order Summary</h2>
+      <p id="cart-total">Total: ₱0.00</p>
+      <button id="checkout-btn">Pay on Delivery</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+  <p><strong>TRESMARIAS & PRINCE</strong> — Milk Tea , Coffee & Snacks</p>
+  <p>📍 Barangay 2, Mercedes Camarines Norte</p>
+
+  <!-- Phone & Email Row -->
+  <p class="footer-contact">
+    <span class="contact-item">
+      <img src="phone call.webp" alt="Phone">
+      <a href="tel:+639537539970">+63 953 753 9970</a>
+    </span>
+    |
+    <span class="contact-item">
+      <img src="gmail.png" alt="Email">
+      <a href="mailto:tresmariasprince@gmail.com">tresmariasprince@gmail.com</a>
+    </span>
+  </p>
+
+  <p class="copy">© <span id="yr"></span> TRESMARIAS & PRINCE. All rights reserved.</p>
+</footer>
+
+  <!-- SCRIPT -->
+  <script>
+    // Load Cart Data from Local Storage
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        cartTotal.textContent = 'Total: ₱0.00';
+        return;
+      }
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+
+        const div = document.createElement('div');
+        div.classList.add('cart-item');
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="item-info">
+            <h3>${item.name}</h3>
+            <p>₱${item.price.toFixed(2)} × ${item.quantity}</p>
+          </div>
+          <div class="item-qty-price">
+            <span>Total: ₱${(item.price * item.quantity).toFixed(2)}</span>
+            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+
+      cartTotal.textContent = `Total: ₱${total.toFixed(2)}`;
+    }
+
+    // Remove Item from Cart
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    // Checkout (Pay on Delivery)
+    checkoutBtn.addEventListener('click', () => {
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      alert('Your order has been placed! Please prepare payment upon delivery. Thank you for choosing TresMarias & Prince!');
+      localStorage.removeItem('cart');
+      cart = [];
+      renderCart();
+    });
+
+    renderCart();
+  </script>
+  
+  <a href="homepage.html" class="back-home">⌂</a>
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+  <script src="cart.js"></script>
+</body>
+</html>
+
+
+
+
+
+
